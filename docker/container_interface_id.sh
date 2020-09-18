@@ -26,5 +26,5 @@ then
   exit 1
 fi
 
-IF_ID=$(docker exec -it ${CONTAINER_ID} cat /sys/class/net/eth0/iflink)
-ip a | grep "^${IF_ID}: " | awk '{print $2}' | awk -F@ '{print $1}'
+IF_ID=$(docker exec ${CONTAINER_ID} cat /sys/class/net/eth0/iflink)
+ip a | awk -vpat=${IF_ID}: '$1 == pat {print $2}' | awk -F@ '{print $1}'
