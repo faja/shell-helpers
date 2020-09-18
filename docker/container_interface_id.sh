@@ -5,7 +5,7 @@ set -o pipefail
 
 if test -z ${1}
 then
-  echo "usage:   ${0##/*/} CONTAINER_NAME"
+  echo "usage:   ${0##/*/} CONTAINER_NAME|CONTAINER_ID"
   echo "example: ${0##/*/} redis"
   exit 0
 fi
@@ -26,4 +26,5 @@ then
   exit 1
 fi
 
-docker exec -it ${CONTAINER_ID} bash
+IF_ID=$(docker exec -it ${CONTAINER_ID} cat /sys/class/net/eth0/iflink)
+ip a | grep "^${IF_ID}: " | awk '{print $2}' | awk -F@ '{print $1}'
