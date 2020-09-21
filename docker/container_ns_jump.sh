@@ -1,6 +1,7 @@
 #!/bin/sh -
 
 set -e
+set -o pipefail
 
 if test -z ${1}
 then
