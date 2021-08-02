@@ -78,7 +78,7 @@ do
   fi
   if test "${ENV}"
   then
-    if test ${VERSION_IN_ENV_FILE} != ${VERSION_AVAILABLE}
+    if ! test "${VERSION_IN_ENV_FILE}" = "${VERSION_AVAILABLE}"
     then
       printf "${RED}"
     fi
