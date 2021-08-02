@@ -73,7 +73,7 @@ find_container_pid
 
 if ! test ${RAW}
 then
-  echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
+  echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL}/${CYAN}${CONTAINER_NAME}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
   echo "  ..its pid: ${CYAN}${CONTAINER_PID}${NORMAL}"
 else
   echo ${CONTAINER_PID}

@@ -78,7 +78,7 @@ fi
 
 find_container_id
 
-echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
+echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL}/${CYAN}${CONTAINER_NAME}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
 echo "  ..executing ${CYAN}${IMAGE} ${COMMAND}${NORMAL} in its NETWORK and PID namespace"
 echo
 ${SUDO} docker run -it --rm --net container:${CONTAINER_ID} --pid container:${CONTAINER_ID} ${IMAGE} ${COMMAND}

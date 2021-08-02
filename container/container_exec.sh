@@ -72,7 +72,7 @@ fi
 
 find_container_id
 
-echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
+echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL}/${CYAN}${CONTAINER_NAME}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
 echo "  ..executing ${CYAN}${COMMAND}${NORMAL} in it"
 echo
 ${SUDO} docker exec -it ${CONTAINER_ID} ${COMMAND}

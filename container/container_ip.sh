@@ -1,24 +1,33 @@
-#!/bin/sh -
-
-# TODO
+#!/bin/bash -
 
 set -e
 set -o pipefail
 
+PROG_NAME=${0##*/}
+PROG_PATH=$(dirname ${0})
+
+# source helpers and colours
+source ${PROG_PATH}/container_helpers.sh
+source ${PROG_PATH}/../colors.sh
+
 # {{{ print_help()
 print_help() {
   echo "usage:   ${0##/*/} CONTAINER [OPTIONS]"
-  echo "example: ${0##/*/} centos --short"
+  echo "example: ${0##/*/} grafana"
   echo
   echo ARGUMENTS:
   echo "  CONTAINER           : container name or id"
   echo
   echo OPTIONS:
   echo "  --help              : print this message"
-  echo "  --short             : print only ip address"
-  echo "  --must-be-one       : exit 1 if found more than 1 container"
+  echo "  --no-sudo           : do not use sudo when executing docker command, default: false"
+  echo "  --raw               : skip story telling, just print pid, default: false"
   exit 0
 }
+# }}}
+# {{{ defaults
+SUDO=sudo
+RAW=
 # }}}
 # {{{ option parsing
 while test $# -gt 0
@@ -33,11 +42,11 @@ do
     ;;
   # }}}
   # {{{ options
-  --short)
-    SHORT=true
+  --no-sudo)
+    SUDO=
     ;;
-  --must-be-one)
-    MUST_BE_ONE=true
+  --raw)
+    RAW=true
     ;;
   # }}}
   # {{{ catch all
@@ -60,22 +69,12 @@ then
   print_help
 fi
 
-ID=$(docker ps --format "{{.ID}}\t{{.Names}}" | grep ${SEARCH} | awk '{print $1}')
-ID_COUNT=$(echo "${ID}" | wc -l)
+find_container_id
 
-if test ${MUST_BE_ONE}
+if ! test ${RAW}
 then
-  if test ${ID_COUNT} -gt 1
-  then
-    echo please be more specific, more than one container found maching \'${SEARCH}\':
-    docker ps --format "{{.ID}}\t{{.Names}}" | grep ${SEARCH}
-    exit 1
-  fi
-fi
-
-if test ${SHORT}
-then
-  docker container inspect ${ID} -f '{{.Name}}: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | awk '{print $2}'
+  echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL}/${CYAN}${CONTAINER_NAME}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
+  echo "  ..its ip: ${CYAN}$(${SUDO} docker container inspect ${CONTAINER_ID} -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}')${NORMAL}"
 else
-  docker container inspect ${ID} -f '{{.Name}}: {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
+  ${SUDO} docker container inspect ${CONTAINER_ID} -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}'
 fi

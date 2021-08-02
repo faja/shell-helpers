@@ -16,6 +16,8 @@ find_container_id() {
     echo found more than 1 container maching \'${SEARCH}\'
     exit 1
   fi
+
+  CONTAINER_NAME=$(${SUDO} docker inspect ${CONTAINER_ID} -f '{{ .Name }}' | sed 's|/||')
 }
 # }}}
 # {{{ find_container_pid

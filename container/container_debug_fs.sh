@@ -42,14 +42,6 @@ do
     ;;
   # }}}
   # {{{ options
-  --image)
-    IMAGE=${2}
-    shift
-    ;;
-  --command)
-    COMMAND=${2}
-    shift
-    ;;
   --no-sudo)
     SUDO=
     ;;
@@ -76,7 +68,7 @@ fi
 
 find_container_pid
 
-echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}' running with pid ${CYAN}${CONTAINER_PID}${NORMAL}.."
+echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL}/${CYAN}${CONTAINER_NAME}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}' running with pid ${CYAN}${CONTAINER_PID}${NORMAL}.."
 echo "  ..explore its filesystem by running '${CYAN}cd /proc/${CONTAINER_PID}/root/${NORMAL}'"
 echo
 echo ls -la /proc/${CONTAINER_PID}/root/
