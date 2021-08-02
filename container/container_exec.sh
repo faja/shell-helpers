@@ -20,14 +20,14 @@ print_help() {
   echo
   echo OPTIONS:
   echo "  --help              : print this message"
+  echo "  --command           : command to execute, default: /bin/sh"
   echo "  --no-sudo           : do not use sudo when executing docker command, default: false"
-  echo "  --raw               : skip story telling, just print id, default: false"
   exit 0
 }
 # }}}
 # {{{ defaults
+COMMAND=/bin/sh
 SUDO=sudo
-RAW=
 # }}}
 # {{{ option parsing
 while test $# -gt 0
@@ -42,11 +42,12 @@ do
     ;;
   # }}}
   # {{{ options
+  --command)
+    COMMAND=${2}
+    shift
+    ;;
   --no-sudo)
     SUDO=
-    ;;
-  --raw)
-    RAW=true
     ;;
   # }}}
   # {{{ catch all
@@ -71,9 +72,7 @@ fi
 
 find_container_id
 
-if ! test ${RAW}
-then
-  echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'"
-else
-  echo ${CONTAINER_ID}
-fi
+echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}'.."
+echo "  ..executing ${CYAN}${COMMAND}${NORMAL} in it"
+echo
+${SUDO} docker exec -it ${CONTAINER_ID} ${COMMAND}

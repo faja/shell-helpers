@@ -1,29 +1,83 @@
-#!/bin/sh -
+#!/bin/bash -
 
 set -e
 set -o pipefail
 
-if test -z ${1}
-then
-  echo "usage:   ${0##/*/} CONTAINER_NAME"
-  echo "example: ${0##/*/} redis"
+PROG_NAME=${0##*/}
+PROG_PATH=$(dirname ${0})
+
+# source helpers and colours
+source ${PROG_PATH}/container_helpers.sh
+source ${PROG_PATH}/../colors.sh
+
+# {{{ print_help()
+print_help() {
+  echo "usage:   ${0##/*/} CONTAINER [OPTIONS]"
+  echo "example: ${0##/*/} grafana"
+  echo
+  echo ARGUMENTS:
+  echo "  CONTAINER           : container name or id"
+  echo
+  echo OPTIONS:
+  echo "  --help              : print this message"
+  echo "  --no-sudo           : do not use sudo when executing docker command, default: false"
   exit 0
-fi
+}
+# }}}
+# {{{ defaults
+IMAGE=alpine:3
+COMMAND=/bin/sh
+SUDO=sudo
+# }}}
+# {{{ option parsing
+while test $# -gt 0
+do
+  case $1 in
+  # {{{ help
+  --help)
+    print_help
+    ;;
+  -h)
+    print_help
+    ;;
+  # }}}
+  # {{{ options
+  --image)
+    IMAGE=${2}
+    shift
+    ;;
+  --command)
+    COMMAND=${2}
+    shift
+    ;;
+  --no-sudo)
+    SUDO=
+    ;;
+  # }}}
+  # {{{ catch all
+  -*)
+    # catch unknown options but continue
+    echo ${0##/*/}: $1: unknown option >&2
+    ;;
+  *)
+    # save first non "-" argument as SEARCH
+    SEARCH=${SEARCH:-${1}}
+    ;;
+  # }}}
+  esac
+  shift
+done
+# }}}
 
-CONTAINER_NAME=${1}
-CONTAINER_ID=$(docker ps | grep ${CONTAINER_NAME} | awk '{print $1}')
-CONTAINER_COUNT=$(echo "${CONTAINER_ID}" | wc -l)
-
-if test -z "${CONTAINER_ID}"
+if test -z ${SEARCH}
 then
-  echo did not find any container maching \'${CONTAINER_NAME}\'
-  exit 1
+  print_help
 fi
 
-if test ${CONTAINER_COUNT} -gt 1
-then
-  echo found more than 1 container maching \'${CONTAINER_NAME}\'
-  exit 1
-fi
+find_container_pid
 
-echo ${CONTAINER_ID}
+echo "Found container ${CYAN}${CONTAINER_ID}${NORMAL} matching '${CYAN}${SEARCH}${NORMAL}' running with pid ${CYAN}${CONTAINER_PID}${NORMAL}.."
+echo "  ..explore its filesystem by running '${CYAN}cd /proc/${CONTAINER_PID}/root/${NORMAL}'"
+echo
+echo ls -la /proc/${CONTAINER_PID}/root/
+${SUDO} ls -la /proc/${CONTAINER_PID}/root/

@@ -20,11 +20,13 @@ print_help() {
   echo
   echo OPTIONS:
   echo "  --help              : print this message"
+  echo "  --no-sudo           : do not use sudo when executing docker command, default: false"
   echo "  --raw               : skip story telling, just print pid, default: false"
   exit 0
 }
 # }}}
 # {{{ defaults
+SUDO=sudo
 RAW=
 # }}}
 # {{{ option parsing
@@ -40,6 +42,9 @@ do
     ;;
   # }}}
   # {{{ options
+  --no-sudo)
+    SUDO=
+    ;;
   --raw)
     RAW=true
     ;;

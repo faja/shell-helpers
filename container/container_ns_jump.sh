@@ -1,5 +1,7 @@
 #!/bin/sh -
 
+# TODO
+
 set -e
 set -o pipefail
 
@@ -13,7 +15,7 @@ fi
 CONTAINER_ID=${1}
 CONTAINER_NETNS=$(docker inspect ${CONTAINER_ID} --format '{{ .NetworkSettings.SandboxKey }}')
 
-echo CONTAINER_ID: ${CONTAINER_ID} 
+echo CONTAINER_ID: ${CONTAINER_ID}
 echo CONTAINER_NETNS: ${CONTAINER_NETNS}
 echo continue?
 read ANSWER
