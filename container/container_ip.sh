@@ -3,6 +3,8 @@
 set -e
 set -o pipefail
 
+SCRIPT_VERSION=1.0.0
+
 PROG_NAME=${0##*/}
 PROG_PATH=$(dirname ${0})
 

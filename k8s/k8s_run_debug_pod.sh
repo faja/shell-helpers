@@ -1,7 +1,9 @@
-#!/bin/sh -
+#!/bin/bash -
 
 set -e
 set -o pipefail
+
+SCRIPT_VERSION=1.0.0
 
 # {{{ print_help()
 print_help() {
@@ -20,7 +22,7 @@ print_help() {
 # {{{ option parsing
 while test $# -gt 0
 do
-  case $1 in 
+  case $1 in
   # {{{ help, yes, verbose
   --help)
     print_help

@@ -1,5 +1,7 @@
 #!/bin/bash -
 
+SCRIPT_VERSION=1.0.0
+
 # {{{ option parsing
 while test $# -gt 0
 do

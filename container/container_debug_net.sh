@@ -3,6 +3,8 @@
 set -e
 set -o pipefail
 
+SCRIPT_VERSION=1.0.0
+
 PROG_NAME=${0##*/}
 PROG_PATH=$(dirname ${0})
 
@@ -20,8 +22,8 @@ print_help() {
   echo
   echo OPTIONS:
   echo "  --help              : print this message"
-  echo "  --image             : image to be used as a debug container, default alpine:3"
-  echo "  --command           : command to start debug container with, default sh"
+  echo "  --image             : image to be used as a debug container, default: alpine:3"
+  echo "  --command           : command to start debug container with, default: sh"
   echo "  --no-sudo           : do not use sudo when executing docker command, default: false"
   exit 0
 }

@@ -1,7 +1,9 @@
-#!/bin/sh -
+#!/bin/bash -
 
 set -e
 set -o pipefail
+
+SCRIPT_VERSION=1.0.0
 
 if ! test -z ${1}
 then

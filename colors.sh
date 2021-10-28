@@ -1,5 +1,7 @@
 #!/bin/bash -
 
+SCRIPT_VERSION=1.0.0
+
 # http://www.andrewnoske.com/wiki/Bash_-_adding_color
 
 # tput setaf color # Set text color

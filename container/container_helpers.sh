@@ -1,5 +1,7 @@
 #!/bin/bash -
 
+SCRIPT_VERSION=1.0.0
+
 # {{{ find_container_id
 find_container_id() {
   CONTAINER_ID=$(${SUDO} docker ps | grep ${SEARCH} | awk '{print $1}')

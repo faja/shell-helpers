@@ -1,7 +1,9 @@
-#!/bin/sh -
+#!/bin/bash -
 
 set -e
 set -o pipefail
+
+SCRIPT_VERSION=1.0.0
 
 if test -z ${1}
 then
@@ -10,4 +12,4 @@ then
   exit 0
 fi
 
-knife node show ${1} -F json | jq '.run_list[]'
+knife node show ${1} -F json | jq -r '.run_list[]'
